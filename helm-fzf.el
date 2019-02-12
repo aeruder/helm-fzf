@@ -22,11 +22,6 @@
   :type 'stringp
   :group 'helm-fzf)
 
-(defun helm-fzf--project-root ()
-  (cl-loop for dir in '(".git/" ".hg/" ".svn/" ".git")
-           when (locate-dominating-file default-directory dir)
-           return it))
-
 (defvar helm-fzf-source
   (helm-build-async-source "fzf"
     :candidates-process 'helm-fzf--do-candidate-process
@@ -52,14 +47,6 @@
 (defun helm-fzf (directory)
   (interactive "D")
   (let ((default-directory directory))
-    (helm :sources '(helm-fzf-source)
-          :buffer "*helm-fzf*")))
-
-(defun helm-fzf-project-root ()
-  (interactive)
-  (let ((default-directory (helm-fzf--project-root)))
-    (unless default-directory
-      (error "Could not find the project root."))
     (helm :sources '(helm-fzf-source)
           :buffer "*helm-fzf*")))
 
